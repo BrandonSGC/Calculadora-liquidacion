@@ -13,7 +13,7 @@ def main():
         header('Grupo Diez - Menú')
         print('\n1- Calcular Liquidación')
         print('2- Editar Datos de Empleado')        
-    
+        
         opcion = int(input('\nIngrese una opción: '))
         empleado = Empleado()
         match opcion:
@@ -49,14 +49,7 @@ def header(titulo = ""):
     print(titulo)
     print('=' * int(len(titulo)))
     
-# Obtenemos todas las fechas desde que inicio y salio del trabajo.
-def obtener_meses_entre_fechas(fecha_entrada, fecha_salida):
-    meses = []
-    fecha_actual = fecha_entrada
-    while fecha_actual <= fecha_salida:
-        meses.append(fecha_actual.strftime("%B %Y"))
-        fecha_actual += relativedelta(months=1)
-    return meses
+
 
 if __name__ == '__main__':
     main()
