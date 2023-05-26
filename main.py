@@ -3,6 +3,36 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 import os
+     
+# Methods
+
+# Limpia pantalla e imprime el titulo dentro de los "=".
+def header(titulo = ""):
+    os.system('cls')
+    print('=' * int(len(titulo)))
+    print(titulo)
+    print('=' * int(len(titulo)))
+
+# Mostrar empleados
+def mostrar_empleados(empleados):
+    for i in range(len(empleados)):
+        print(f"{i}- {empleados[i]}")
+
+# Editar empleados
+def editar_empleados(empleados):
+    for i in range(len(empleados)):
+        print(f"{i}- {empleados[i]}")
+    
+    seleccionar_empleado()
+    
+# Eliminar Empleado
+def eliminar_empleado():
+    pass
+
+# Seleccionar empleado
+def seleccionar_empleado(self):
+    pass
+
 
 def main():
     # En esta lista almacenaremos los empleados.
@@ -21,14 +51,15 @@ def main():
                 header('Calcular Liquidación')
                 empleado.ingresar_empleado() 
                 empleados.append(empleado) 
+                
                 print('\nResultado: \n')              
-                print(empleados[0])
+                mostrar_empleados()
                 
                 input('Enter para continuar...')
                 
             case 2:
                 header('Editar Datos de Empleado')
-                
+                mostrar_empleados()
                 input('Enter para continuar...')
             
             case 5:
@@ -39,17 +70,6 @@ def main():
                 print('Ingrese una opción correcta.')
                 input('Enter para continuar...')
                 
-     
-# Methods
-
-# Limpia pantalla e imprime el titulo dentro de los "=".
-def header(titulo = ""):
-    os.system('cls')
-    print('=' * int(len(titulo)))
-    print(titulo)
-    print('=' * int(len(titulo)))
-    
-
 
 if __name__ == '__main__':
     main()

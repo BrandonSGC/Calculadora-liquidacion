@@ -6,7 +6,7 @@ import os
 class Empleado:    
     # Constructores.
     def __init__(self, cedula = 0, nombre = "", apellidos = "", 
-    telefono = 0, puesto = "", responsabilidad_patronal = False, 
+    telefono = 0, puesto = "", sueldo = "", responsabilidad_patronal = False, 
     renuncia = False, fecha_entrada = "", fecha_salida = "",
     aguinaldo = 0, preaviso = False, cesantia = False):
         self.__cedula = cedula
@@ -14,14 +14,16 @@ class Empleado:
         self.__apellidos = apellidos
         self.__telefono = telefono
         self.__puesto = puesto
+        self.__sueldo = sueldo
         self.__responsabilidad_patronal = responsabilidad_patronal
         self.__renuncia = renuncia
         self.__fecha_entrada = fecha_entrada
         self.__fecha_salida = fecha_salida
+        self.__preaviso = preaviso
     
     # Getters & Setters
     def get_cedula(self):
-        return self.__cedula
+        return self.__cedula    
     def set_cedula(self, cedula):
         self.__cedula = cedula
     
@@ -44,6 +46,11 @@ class Empleado:
         return self.__puesto
     def set_puesto(self, puesto):
         self.__puesto = puesto
+        
+    def get_sueldo(self):
+        return self.__sueldo
+    def set_sueldo(self, sueldo):
+        self.__sueldo = sueldo
         
     def get_responsabilidad_patronal(self):
         return self.__responsabilidad_patronal
@@ -70,25 +77,38 @@ class Empleado:
     def set_responsabilidad_patronal(self, responsabilidad_patronal):
         self.__responsabilidad_patronal = responsabilidad_patronal
         
+    def get_preaviso(self):
+        return self.__preaviso
+    def set_preaviso(self, preaviso):
+        self.__preaviso = preaviso
+        
         
     # Metodos
     def ingresar_empleado(self):
-        self.set_cedula(input('Cedula: '))
+        self.set_cedula(input('Cedula: ')) #validar
         self.set_nombre(input('Nombre: '))
         self.set_apellidos(input('Apellidos: '))
-        self.set_telefono = int(input('Telefono: '))
-        self.set_puesto(input('Puesto: ')) 
-        #self.obtener_fechas()
-        self.seleccionar_motivo_salida()        
-        if self.get_responsabilidad_patronal():
+        self.set_telefono = input('Telefono: ') #validar
+        self.set_puesto(input('Puesto: '))
+        self.set_sueldo(int(input('Sueldo: '))) #validar
+        
+        os.system('cls')
+        self.seleccionar_motivo_salida()
+        if self.get_responsabilidad_patronal == True:
             # Calcular cesantia, aguinaldo y pagar preaviso.
             pass
         else:
-            self.calcular_aguinaldo()
+            # Calcular aguinaldo.
             pass
         
-        
-        
+        respuesta = input("¿Se ha ejercido el preaviso? (Si / No): ")
+        if respuesta == 'Si' or 'si' or 'SI' or 's':
+            self.set_preaviso(True)
+        else:
+            self.set_preaviso(False)
+            
+            
+       
     def seleccionar_motivo_salida(self):
         continuar = True
         while continuar:
@@ -111,68 +131,12 @@ class Empleado:
                 case _:
                     print('Ingrese una opcion correcta.')
                     input('Enter para continuar...')
-            
-   
-    # Obtenemos una lista con los meses desde que inicio y salio del trabajo.
-    def obtener_meses_entre_fechas(self, fecha_entrada, fecha_salida):
-        meses = []
-        fecha_actual = fecha_entrada
-        while fecha_actual <= fecha_salida:
-            meses.append(fecha_actual.strftime("%B %Y"))
-            fecha_actual += relativedelta(months=1)
-        return meses
-            
-
-    def obtener_fechas(self):
-        fecha_entrada = input('Fecha de entrada (Ejemplo: 2022/01/01): ')
-        fecha_salida = input('Fecha de salida (Ejemplo: 2023/01/01): ')
-
-        # Obtenemos una lista con los valores individuales del año, mes y día.
-        datos_fecha_entrada = fecha_entrada.split('/')
-        datos_fecha_salida = fecha_salida.split('/')
-
-        # Asignamos la fecha a los atributos ya con el formato correcto.
-        self.set_fecha_entrada(datetime(int(datos_fecha_entrada[0]), int(datos_fecha_entrada[1]), int(datos_fecha_entrada[2])))
-        self.set_fecha_salida(datetime(int(datos_fecha_salida[0]), int(datos_fecha_salida[1]), int(datos_fecha_salida[2])))
-
-        meses = self.obtener_meses_entre_fechas(self.get_fecha_entrada(), self.get_fecha_salida())
-
-        salario_total = 0
-        for mes in range(len(meses) - 1):
-            salario = int(input(f'Salario de {meses[mes]}: '))
-            salario_total += salario
-
-        print(f'Salario total: {salario_total}')
         
-        
-    
-    
+
     # Promedio mensual de las ganancias de todo el año.
-    def calcular_aguinaldo(self): 
-        fecha_entrada = input('Fecha de entrada (Ejemplo: 2022/01/01): ')
-        fecha_salida = input('Fecha de salida (Ejemplo: 2023/01/01): ')
-
-        # Obtenemos una lista con los valores individuales del año, mes y día.
-        datos_fecha_entrada = fecha_entrada.split('/')
-        datos_fecha_salida = fecha_salida.split('/')
-
-        # Asignamos la fecha a los atributos ya con el formato correcto.
-        self.set_fecha_entrada(datetime(int(datos_fecha_entrada[0]), int(datos_fecha_entrada[1]), int(datos_fecha_entrada[2])))
-        self.set_fecha_salida(datetime(int(datos_fecha_salida[0]), int(datos_fecha_salida[1]), int(datos_fecha_salida[2])))
-
-        meses = self.obtener_meses_entre_fechas(self.get_fecha_entrada(), self.get_fecha_salida())
-
-        salario_total = 0
-        for mes in range(len(meses) - 1):
-            salario = int(input(f'Salario de {meses[mes]}: '))
-            salario_total += salario
-        
-        # Calculo aguinaldo.
-        aguinaldo = (salario_total / len(meses)) / 12
-
-        print(f'Aguinaldo: {aguinaldo}')
-        
-          
+    def calcular_aguinaldo(self, fecha_entrada, fecha_salida, salario):
+        pass
+            
     # Debe tener responsabilidad patronal.
     def calcular_cesantia(self): 
         pass
