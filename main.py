@@ -19,8 +19,8 @@ def header(titulo = ""):
 def mostrar_empleados(empleados): 
     for i in range(len(empleados)):
         print(f"{empleados[i]}")
-    print('=' * 30)
-    print('')
+        print('=' * 36)
+        print('')
 
 # Editar empleados
 def editar_empleados(empleados):
@@ -66,17 +66,13 @@ def main():
         match opcion:            
             case 1:
                 header('Calcular Liquidación')
-                empleado.ingresar_empleado() 
-                empleados.append(empleado) 
-                os.system('cls')
-                print('\nResultado: \n')              
-                print(empleado)
-                
+
                 input('Enter para continuar...')
             
             case 2:
                 header('Crear Empleado.')
-
+                empleado.crear_empleado()
+                empleados.append(empleado)
                 input('Enter para continuar...')
             
             case 3:

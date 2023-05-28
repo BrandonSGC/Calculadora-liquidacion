@@ -78,6 +78,8 @@ class Empleado:
         
         
     # Metodos
+
+    # Crear nuevo empleado.
     def crear_empleado(self):
         self.set_cedula(input('\nCedula ejemplo "123427893": ')) #validar
         self.set_nombre(input('Nombre (Solo el nombre): '))
@@ -89,12 +91,19 @@ class Empleado:
         fecha_entrada = input('Fecha de entrada ejemplo 2022/01/01: ')
         fecha_salida = input('Fecha de salida ejemplo 2022/01/01: ')
    
-        # Asignamos la fecha ya en su formato al atributo.
-        self.set_fecha_salida(self.formato_fecha(fecha_salida))
+        # Asignamos las fechas ya en su formato corecto.
+        self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
+        self.set_fecha_salida(self.formatear_fecha(fecha_salida))
   
+
+
+
+
+
+
             
     # Metodo para dar convertir string a fecha.
-    def formato_fecha(self, fecha):
+    def formatear_fecha(self, fecha):
         # Convertimos a fechas con el formato correcot.
         fecha = datetime.strptime(fecha, "%Y/%m/%d")
         return fecha
@@ -173,4 +182,4 @@ class Empleado:
     
     
     def __str__(self):
-        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nResponsabilidad Patronal: {self.get_responsabilidad_patronal()} \n Total Liquidacion: {self.get_total_liquidacion()}"
+        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nTotal Liquidacion: {self.get_total_liquidacion()}"
