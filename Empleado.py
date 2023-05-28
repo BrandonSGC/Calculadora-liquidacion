@@ -7,7 +7,8 @@ class Empleado:
     # Constructores.
     def __init__(self, cedula = 0, nombre = "", apellidos = "", 
     telefono = 0, puesto = "", fecha_entrada = "", fecha_salida = "",
-    aguinaldo = 0, preaviso = 0, cesantia = 0, total_liquidacion = 0):
+    total_aguinaldo = 0, total_preaviso = 0, total_cesantia = 0, 
+    total_liquidacion = 0):
         self.__cedula = cedula
         self.__nombre = nombre
         self.__apellidos = apellidos
@@ -15,9 +16,9 @@ class Empleado:
         self.__puesto = puesto
         self.__fecha_entrada = fecha_entrada
         self.__fecha_salida = fecha_salida
-        self.__total_preaviso = preaviso
-        self.__total_aguinaldo = aguinaldo
-        self.__total_cesantia = cesantia
+        self.__total_preaviso = total_preaviso
+        self.__total_aguinaldo = total_aguinaldo
+        self.__total_cesantia = total_cesantia
         self.__total_liquidacion = total_liquidacion
     
     # Getters & Setters
@@ -88,8 +89,8 @@ class Empleado:
         self.set_puesto(input('Puesto: '))
         
         # Obtener fechas
-        fecha_entrada = input('Fecha de entrada ejemplo 2022/01/01: ')
-        fecha_salida = input('Fecha de salida ejemplo 2022/01/01: ')
+        fecha_entrada = input('Fecha de entrada ejemplo 2022-01-01: ')
+        fecha_salida = input('Fecha de salida ejemplo 2022-01-01: ')
    
         # Asignamos las fechas ya en su formato corecto.
         self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
@@ -98,29 +99,12 @@ class Empleado:
 
 
 
-
-
-
-            
     # Metodo para dar convertir string a fecha.
     def formatear_fecha(self, fecha):
-        # Convertimos a fechas con el formato correcot.
-        fecha = datetime.strptime(fecha, "%Y/%m/%d")
+        # Convertimos a fechas con el formato correcto.
+        fecha = datetime.strptime(fecha, "%Y-%m-%d")
         return fecha
-        
-        
-    def obtener_ultimos_meses(self, fecha_salida):
-        # Obtén la fecha actual
-        fecha_salida = datetime.now()
-
-        # Calcula la fecha hace 6 meses
-        fecha_6_meses_atras = fecha_salida - timedelta(days=6*30)  # Asumiendo que un mes tiene 30 días.
-
-        # Imprime los últimos 6 meses
-        for i in range(6):
-            fecha = fecha_6_meses_atras + timedelta(days=i*30)
-            print(fecha.strftime("%Y-%m"))
-
+            
         
         
     def seleccionar_motivo_salida(self):

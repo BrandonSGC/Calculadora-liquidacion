@@ -15,6 +15,7 @@ def header(titulo = ""):
     print(titulo)
     print('=' * int(len(titulo)))
 
+
 # Mostrar empleados
 def mostrar_empleados(empleados): 
     for i in range(len(empleados)):
@@ -22,19 +23,45 @@ def mostrar_empleados(empleados):
         print('=' * 36)
         print('')
 
+
 # Editar empleados
 def editar_empleados(empleados):
-    pass
+    if len(empleados) > 0:
+        pass
+    else:
+        print('No se han ingresado empleados al sistema.')
     
     
 # Eliminar Empleado
 def eliminar_empleado(empleados):
-    pass
-
+    if len(empleados) > 0:
+        cedula = input('Cedula a eliminar: ')
+        print('')
+        for i in range(len(empleados)):
+            if empleados[i].get_cedula() == cedula:
+                empleados.remove(empleados[i])
+                print('Empleado eliminado correctamente.')
+                break
+            else:
+                print('No se han encontrado resultados.')
+    else:
+        print('No se han ingresado empleados al sistema.')
+    
 
 # Buscar empleado
 def buscar_empleado(empleados):
-    pass
+    if len(empleados) > 0:
+        cedula = input('Cedula a buscar: ')
+        print('')
+        for i in range(len(empleados)):
+            if empleados[i].get_cedula() == cedula:
+                print(empleados[i])
+                break
+            else:
+                print('No se han encontrado resultados.')
+    else:
+        print('No se han ingresado empleados al sistema.')
+    
 
 
 # Metodo Principal (Donde empezamos a ejecutar todo el codigo).
@@ -77,15 +104,13 @@ def main():
             
             case 3:
                 header('Mostrar Empleados')
-                if len(empleados) > 0:
-                    mostrar_empleados(empleados)
-                else:
-                    print('No se han ingresado empleados al sistema.')
+                
+                mostrar_empleados(empleados)
                 input('Enter para continuar...')
                 
             case 4:
                 header('Buscar Empleados')
-                
+                buscar_empleado(empleados)
                 input('Enter para continuar...')
             case 5:
                 header('Editar Datos de Empleado')
@@ -94,7 +119,7 @@ def main():
             
             case 6:
                 header('Eliminar Empleado')
-
+                eliminar_empleado(empleados)
                 input('Enter para continuar...')
 
             case 7:
