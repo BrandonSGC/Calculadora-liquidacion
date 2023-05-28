@@ -6,22 +6,18 @@ import os
 class Empleado:    
     # Constructores.
     def __init__(self, cedula = 0, nombre = "", apellidos = "", 
-    telefono = 0, puesto = "", sueldo = "", responsabilidad_patronal = False, 
-    renuncia = False, fecha_entrada = "", fecha_salida = "",
-    aguinaldo = 0, preaviso = False, cesantia = 0, total_liquidacion = 0):
+    telefono = 0, puesto = "", fecha_entrada = "", fecha_salida = "",
+    aguinaldo = 0, preaviso = 0, cesantia = 0, total_liquidacion = 0):
         self.__cedula = cedula
         self.__nombre = nombre
         self.__apellidos = apellidos
         self.__telefono = telefono
         self.__puesto = puesto
-        self.__sueldo = sueldo
-        self.__responsabilidad_patronal = responsabilidad_patronal
-        self.__renuncia = renuncia
         self.__fecha_entrada = fecha_entrada
         self.__fecha_salida = fecha_salida
-        self.__preaviso = preaviso
-        self.__aguinaldo = aguinaldo
-        self.__cesantia = cesantia
+        self.__total_preaviso = preaviso
+        self.__total_aguinaldo = aguinaldo
+        self.__total_cesantia = cesantia
         self.__total_liquidacion = total_liquidacion
     
     # Getters & Setters
@@ -48,22 +44,7 @@ class Empleado:
     def get_puesto(self):
         return self.__puesto
     def set_puesto(self, puesto):
-        self.__puesto = puesto
-        
-    def get_sueldo(self):
-        return self.__sueldo
-    def set_sueldo(self, sueldo):
-        self.__sueldo = sueldo
-        
-    def get_responsabilidad_patronal(self):
-        return self.__responsabilidad_patronal
-    def set_responsabilidad_patronal(self, responsabilidad_patronal):
-        self.__responsabilidad_patronal = responsabilidad_patronal    
-        
-    def get_renuncia(self):
-        return self.__renuncia
-    def set_reuncia(self, renuncia):
-        self.__renuncia = renuncia
+        self.__puesto = puesto        
     
     def get_fecha_entrada(self):
         return self.__fecha_entrada
@@ -75,25 +56,20 @@ class Empleado:
     def set_fecha_salida(self, fecha_salida):
         self.__fecha_salida = fecha_salida
         
-    def get_responsabilidad_patronal(self):
-        return self.__responsabilidad_patronal
-    def set_responsabilidad_patronal(self, responsabilidad_patronal):
-        self.__responsabilidad_patronal = responsabilidad_patronal
-        
-    def get_preaviso(self):
-        return self.__preaviso
-    def set_preaviso(self, preaviso):
-        self.__preaviso = preaviso
+    def get_total_preaviso(self):
+        return self.__total_preaviso
+    def set_total_preaviso(self, total_preaviso):
+        self.__total_preaviso = total_preaviso
        
-    def get_aguinaldo(self):
-        return self.__aguinaldo
-    def set_aguinaldo(self, aguinaldo):
-        self.__aguinaldo = aguinaldo   
+    def get_total_aguinaldo(self):
+        return self.__total_aguinaldo
+    def set_total_aguinaldo(self, total_aguinaldo):
+        self.__total_aguinaldo = total_aguinaldo   
         
-    def get_cesantia(self):
-        return self.__cesantia
-    def set_cesantia(self, cesantia):
-        self.__cesantia = cesantia
+    def get_total_cesantia(self):
+        return self.__total_cesantia
+    def set_total_cesantia(self, total_cesantia):
+        self.__total_cesantia = total_cesantia
     
     def get_total_liquidacion(self):
         return self.__total_liquidacion
@@ -102,52 +78,20 @@ class Empleado:
         
         
     # Metodos
-    def ingresar_empleado(self):
-        self.set_cedula(input('\nCedula: ')) #validar
+    def crear_empleado(self):
+        self.set_cedula(input('\nCedula ejemplo "123427893": ')) #validar
         self.set_nombre(input('Nombre (Solo el nombre): '))
         self.set_apellidos(input('Apellidos: '))
-        self.set_telefono = input('Telefono: ') #validar
+        self.set_telefono = input('Telefono ejemplo "71234567": ') #validar
         self.set_puesto(input('Puesto: '))
-        self.set_sueldo(int(input('Sueldo mensual: '))) #validar
         
-        os.system('cls')
         # Obtener fechas
         fecha_entrada = input('Fecha de entrada ejemplo 2022/01/01: ')
         fecha_salida = input('Fecha de salida ejemplo 2022/01/01: ')
-                
-                
-                
+   
         # Asignamos la fecha ya en su formato al atributo.
         self.set_fecha_salida(self.formato_fecha(fecha_salida))
-                
-        
-        
-        
-        self.seleccionar_motivo_salida()
-        if self.get_responsabilidad_patronal == True:        
-            # Calcular cesantia
-            self.set_cesantia(self.calcular_cesantia())
-            print(f"Total cesantia: {self.get_cesantia()}")
-            
-            # Calcular aguinaldo.
-            self.set_aguinaldo(self.calcular_aguinaldo(self.get_fecha_salida()))
-            
-            # Pagar peraviso.
-            
-            # Calcular Total de la Liquidacion.
-            self.set_total_liquidacion(self.calcular_liquidacion())
-            
-        else:
-            # Calcular aguinaldo.
-            self.set_aguinaldo(self.calcular_aguinaldo(self.get_fecha_salida()))
-            
-            
-        respuesta = input("¿Se ha ejercido el preaviso? (Si / No): ")
-        if respuesta == 'Si' or 'si' or 'SI' or 's':
-            self.set_preaviso(True)
-        else:
-            self.set_preaviso(False)
-            
+  
             
     # Metodo para dar convertir string a fecha.
     def formato_fecha(self, fecha):
@@ -179,6 +123,7 @@ class Empleado:
             print('2- Despido sin responsabilidad patronal')
             print('3- Renuncia')
             
+            # Validamos que la opcion sea correcta.
             try:
                 opcion = int(input('\nIngrese una opción: '))
             except:
@@ -199,7 +144,6 @@ class Empleado:
                     input('Enter para continuar...')
         
 
-
     def calcular_aguinaldo(self, fecha_salida):
         # Obtenemos el ultimo diciembre.
         ultimo_diciembre = datetime(fecha_salida.year - 1, 12, 1)
@@ -215,28 +159,18 @@ class Empleado:
         return aguinaldo
 
                  
-    # Debe tener responsabilidad patronal.
+
     def calcular_cesantia(self): 
-        total_cesantia = 0
-        
-        print('Ingrese los ultimos 6 salarios recibidos.\n')
-        for i in range(6):
-            total_cesantia += int(input(f'Salario # {i}: '))
-        
-        # Se suman los salarios de los últimos seis meses y se divide entre seis para obtener el monto mensual.
-        return total_cesantia / 6
-        
-        
+        pass
+          
     
-    def preaviso(self): 
+    def calcular_dias_preaviso(self): 
         pass
     
     
     def calcular_liquidacion(self):        
-        liquidacion = self.get_cesantia() + self.get_aguinaldo()
-        return liquidacion
-    
+        pass
     
     
     def __str__(self):
-        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_aguinaldo()} \nCesantía: {self.get_cesantia()} \nPreaviso: {self.get_preaviso()} \nResponsabilidad Patronal: {self.get_responsabilidad_patronal()}"
+        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nResponsabilidad Patronal: {self.get_responsabilidad_patronal()} \n Total Liquidacion: {self.get_total_liquidacion()}"
