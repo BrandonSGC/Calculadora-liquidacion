@@ -95,16 +95,12 @@ class Empleado:
         # Asignamos las fechas ya en su formato corecto.
         self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
         self.set_fecha_salida(self.formatear_fecha(fecha_salida))
-  
 
+        print('\nCalcular el preaviso:\n')
+        self.set_total_preaviso(self.calcular_preaviso())
+        print(self.get_total_preaviso())
 
-    # Metodo para dar convertir string a fecha.
-    def formatear_fecha(self, fecha):
-        # Convertimos a fechas con el formato correcto.
-        fecha = datetime.strptime(fecha, "%Y-%m-%d")
-        return fecha
-            
-        
+                
         
     def seleccionar_motivo_salida(self):
         continuar = True
@@ -136,33 +132,70 @@ class Empleado:
                     input('Enter para continuar...')
         
 
-    def calcular_aguinaldo(self, fecha_salida):
-        # Obtenemos el ultimo diciembre.
-        ultimo_diciembre = datetime(fecha_salida.year - 1, 12, 1)
+    
+    def calcular_preaviso(self):
+        # Sacamos los años, meses y dias que trabajo el empleado.
+        years, meses, dias = self.obtener_tiempo_laborado(self.get_fecha_entrada(), self.get_fecha_salida())
+
+        # Obtenemos el salario total de los ultimos 6 meses. 
+        print('Por favor ingrese el salario de los ultimos 6 salarios.')
+        salario_total = 0        
+        for i in range(6):
+            salario = int(input(f'Salario #{i+1}: '))
+            salario_total += salario
+
+        # Una vez tenemos el salario total de esos meses lo tenemos
+        # que dividir entre 6.        
+        salario_total = salario_total / 6     
         
-        # Obtenemos los meses de diferencia.
-        diferencia = relativedelta(fecha_salida, ultimo_diciembre)
-        cantidad_meses = (diferencia.years * 12 + diferencia.months) + 1 #+1 Para que me cuente diciembre.
-
-        salario_mensual = self.get_sueldo()
+        # Ahora ese promedio lo debemos de dividir entre los 30 dias del
+        # mes para sacar el salario por dia.
+        salario_dia = salario_total / 30
+        print(f'Salario por dia: {salario_dia}')
         
-        aguinaldo = ((salario_mensual * cantidad_meses - 1) / cantidad_meses - 1) / 12
-
-        return aguinaldo
-
-                 
+        # Dependiendo de esos dias entonces de acuerdo a la tabla
+        # verificamos cuantos dias de preaviso le tocan.
+        if years < 1 and meses < 3:
+            return 0
+        elif years < 1 and meses >= 3 and meses < 6:
+            dias_preaviso = 7
+            total_preaviso = salario_dia * dias_preaviso
+            return total_preaviso
+        elif years < 1 and meses >= 6:
+            dias_preaviso = 15
+            total_preaviso = salario_dia * dias_preaviso
+            return total_preaviso
+        else:
+            dias_preaviso = 30
+            total_preaviso = salario_dia * dias_preaviso
+            return total_preaviso
 
     def calcular_cesantia(self): 
         pass
-          
-    
-    def calcular_dias_preaviso(self): 
+
+    def calcular_aguinaldo(self):
         pass
-    
-    
+
     def calcular_liquidacion(self):        
         pass
+
+    # Metodo para dar convertir string a fecha.
+    def formatear_fecha(self, fecha):
+        # Convertimos a fechas con el formato correcto.
+        fecha = datetime.strptime(fecha, "%Y-%m-%d")
+        return fecha    
     
+    # Metodo para...
+    def obtener_tiempo_laborado(self, fecha1, fecha2):
+        diferencia = fecha2 - fecha1
+
+        #Obtenemos la diferencia en años, meses y dias.
+        years = diferencia.days // 365
+        meses = (diferencia.days % 365) // 30
+        dias = (diferencia.days % 365) % 30
+
+        return years, meses, dias
+        
     
     def __str__(self):
-        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nTotal Liquidacion: {self.get_total_liquidacion()}"
+        return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nTelefono: {self.get_telefono()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nTotal Liquidacion: {self.get_total_liquidacion()}"
