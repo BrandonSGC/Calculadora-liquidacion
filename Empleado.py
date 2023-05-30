@@ -85,7 +85,7 @@ class Empleado:
         self.set_cedula(input('\nCedula ejemplo "123427893": ')) #validar
         self.set_nombre(input('Nombre (Solo el nombre): '))
         self.set_apellidos(input('Apellidos: '))
-        self.set_telefono = input('Telefono ejemplo "71234567": ') #validar
+        self.set_telefono = int(input('Telefono ejemplo "71234567": ')) #validar
         self.set_puesto(input('Puesto: '))
         
         # Obtener fechas
@@ -96,7 +96,6 @@ class Empleado:
         self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
         self.set_fecha_salida(self.formatear_fecha(fecha_salida))
   
-
 
 
     # Metodo para dar convertir string a fecha.
