@@ -96,11 +96,18 @@ class Empleado:
         self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
         self.set_fecha_salida(self.formatear_fecha(fecha_salida))
 
+
+
+        # Arreglar lo de pedir los salarios.
+
         print('\nCalcular el preaviso:\n')
         self.set_total_preaviso(self.calcular_preaviso())
         print(self.get_total_preaviso())
 
-                
+        print('\nCalcular Cesantía')
+        self.set_total_cesantia(self.calcular_cesantia())
+        print(self.get_total_cesantia())
+
         
     def seleccionar_motivo_salida(self):
         continuar = True
@@ -134,14 +141,15 @@ class Empleado:
 
     
     def calcular_preaviso(self):
-        # Sacamos los años, meses y dias que trabajo el empleado.
+        # Sacamos los años, meses y dias que trabajo el empleado a partir
+        # de la fecha de entrada y salida.
         years, meses, dias = self.obtener_tiempo_laborado(self.get_fecha_entrada(), self.get_fecha_salida())
 
-        # Obtenemos el salario total de los ultimos 6 meses. 
-        print('Por favor ingrese el salario de los ultimos 6 salarios.')
+        # Obtenemos el salario total de los ultimos 6 meses para el calculo del preaviso y cesantia. 
+        print('Por favor ingrese el ingreso bruto / neto de los ultimos 6 salarios.')
         salario_total = 0        
         for i in range(6):
-            salario = int(input(f'Salario #{i+1}: '))
+            salario = int(input(f'Salario # {i+1}: '))
             salario_total += salario
 
         # Una vez tenemos el salario total de esos meses lo tenemos
@@ -157,20 +165,98 @@ class Empleado:
         # verificamos cuantos dias de preaviso le tocan.
         if years < 1 and meses < 3:
             return 0
+        
+        # De 3 a menos de 6 meses: 1 semana.
         elif years < 1 and meses >= 3 and meses < 6:
             dias_preaviso = 7
             total_preaviso = salario_dia * dias_preaviso
             return total_preaviso
+        
+        # De 6 meses a menos de 1 año: 15 días.
         elif years < 1 and meses >= 6:
             dias_preaviso = 15
             total_preaviso = salario_dia * dias_preaviso
             return total_preaviso
+        
+        # Más de 1 año: 1 mes de preaviso
         else:
             dias_preaviso = 30
             total_preaviso = salario_dia * dias_preaviso
             return total_preaviso
 
+
     def calcular_cesantia(self): 
+        # Sacamos los años, meses y dias que trabajo el empleado a partir
+        # de la fecha de entrada y salida.
+        years, meses, dias = self.obtener_tiempo_laborado(self.get_fecha_entrada(), self.get_fecha_salida())
+
+        # Obtenemos el salario total de los ultimos 6 meses para el calculo del preaviso y cesantia. 
+        print('Por favor ingrese el ingreso bruto / neto de los ultimos 6 salarios.')
+        salario_total = 0        
+        for i in range(6):
+            salario = int(input(f'Salario # {i+1}: '))
+            salario_total += salario
+
+        # Una vez tenemos el salario total de esos meses lo tenemos
+        # que dividir entre 6.        
+        salario_total = salario_total / 6     
+        
+        # Ahora ese promedio lo debemos de dividir entre los 30 dias del
+        # mes para sacar el salario por dia.
+        salario_dia = salario_total / 30
+        print(f'Salario por dia: {salario_dia}')
+        
+
+        if years == 1:
+            dias_cesantia = 19.5
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+
+        elif years == 2:
+            dias_cesantia = 20
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+
+        elif years == 3:
+            dias_cesantia = 20.5
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+        
+        elif years == 4:
+            dias_cesantia = 21
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+        
+        elif years == 5:
+            dias_cesantia = 21.24
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+
+        elif years == 6:
+            dias_cesantia = 21.5
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+
+        elif years == 7:
+            dias_cesantia = 22
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+        
+        else:
+            pass
+
+
+
+        # Se multiplican esos dias por cada año.
+        # Ejemplo si el trabajador duro 2 años entonces digamos
+        # que la tabla le dice 20 dias. Enotonces lo que 
+        # hacemos es multiplcar 20 por cada año laborado
+        # Osea : 20 * años trabajados = 40
+
+        # Luego multiplicamos 40 * salario por dia 
+
+
+
         pass
 
     def calcular_aguinaldo(self):
@@ -195,6 +281,14 @@ class Empleado:
         dias = (diferencia.days % 365) % 30
 
         return years, meses, dias
+    
+    def obtnener_salarios(self):
+        pass
+        
+    def obtener_salario_dia(self):
+        pass
+
+    
         
     
     def __str__(self):
