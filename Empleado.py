@@ -2,12 +2,13 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 import os
+import re
 
 
 class Empleado:    
     # Constructores.
-    def __init__(self, cedula = 0, nombre = "", apellidos = "", 
-    telefono = 0, puesto = "", fecha_entrada = "", fecha_salida = "",
+    def __init__(self, cedula = "", nombre = "", apellidos = "", 
+    telefono = "", puesto = "", fecha_entrada = "", fecha_salida = "",
     total_aguinaldo = 0, total_preaviso = 0, total_cesantia = 0, 
     total_liquidacion = 0):
         self.__cedula = cedula
@@ -81,12 +82,53 @@ class Empleado:
         
     # Metodos
 
+    #Metodo para validar la cedula en el formato correcto.
+    def validar_cedula(self, cedula):
+        # Patron que verifica que la cedula comience con un dígito seguido 
+        # de un guion, luego cuatro dígitos, otro guion y finalmente otros
+        # cuatro dígitos.
+        patron = r'^\d{1}-\d{4}-\d{4}$'
+        coincidencia = re.match(patron, cedula)
+        if coincidencia:
+            return True
+        else:
+            print("La cédula no tiene el formato válido.\n")
+            return False
+
+    def validar_telefono(self, telefono):
+        # Patron que verifica que el string comience con cuatro dígitos, 
+        # seguidos de un guion y otros cuatro dígitos        
+        patron = r'^\d{4}-\d{4}$'
+        coincidencia = re.match(patron, telefono)
+        if coincidencia:
+            return True
+        else:
+            print("El número telefónico no tiene el formato válido.\n")
+            return False
+
     # Crear nuevo empleado.
     def crear_empleado(self):
-        self.set_cedula(input('\nCedula ejemplo "123427893": ')) #validar
+        # Mientras la cedula no sea valida le preguntamos su cedula.
+        cedula_valida = False
+        while not cedula_valida:
+            cedula = input("Ingresa tu Cédula, ejemplo: 1-1111-1111: ")
+            cedula_valida = self.validar_cedula(cedula)
+            if cedula_valida:
+                self.set_cedula(cedula)
+                break
+            
         self.set_nombre(input('Nombre (Solo el nombre): '))
         self.set_apellidos(input('Apellidos: '))
-        self.set_telefono(input('Telefono ejemplo "71234567": ')) #validar
+
+        # Mientras el telefono no sea valido le preguntamos su telefono.
+        telefono_valido = False
+        while not telefono_valido:
+            telefono = input('Ingresa tu Teléfono, ejemplo "8888-8888": ')
+            telefono_valido = self.validar_telefono(telefono)
+            if telefono_valido:
+                self.set_telefono(telefono)
+                break
+
         self.set_puesto(input('Puesto: '))
         
         # Obtener fechas

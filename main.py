@@ -59,7 +59,16 @@ def modificar_empleados(empleados):
                         break
                     case 3:
                         print(f'\nTelefono: {empleados[i].get_telefono()}')
-                        empleados[i].set_telefono(input('Nuevo Telefono: '))
+                        # Mientras el telefono no sea valido le preguntamos su telefono.
+                        telefono_valido = False
+                        while not telefono_valido:
+                            telefono = input('Ingresa tu nuevo teléfono, ejemplo "8888-8888": ')
+                            telefono_valido = empleados[i].validar_telefono(telefono)
+                            if telefono_valido:
+                                empleados[i].set_telefono(telefono)
+                                break
+
+
                         print('El Telefono se ha actualizado correctamente.')
                         break
                     case 4:
