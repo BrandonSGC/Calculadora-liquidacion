@@ -156,7 +156,7 @@ def main():
         match opcion:            
             case 1:
                 header('Calcular Liquidación')
-
+                                
                 input('Enter para continuar...')
             
             case 2:
