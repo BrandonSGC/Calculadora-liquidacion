@@ -86,7 +86,7 @@ class Empleado:
         self.set_cedula(input('\nCedula ejemplo "123427893": ')) #validar
         self.set_nombre(input('Nombre (Solo el nombre): '))
         self.set_apellidos(input('Apellidos: '))
-        self.set_telefono = int(input('Telefono ejemplo "71234567": ')) #validar
+        self.set_telefono(input('Telefono ejemplo "71234567": ')) #validar
         self.set_puesto(input('Puesto: '))
         
         # Obtener fechas
@@ -98,53 +98,7 @@ class Empleado:
         self.set_fecha_salida(self.formatear_fecha(fecha_salida))
 
 
-        # Calculo del aguinaldo.
-        print('\nCalculo Aguinaldo:')
-        self.set_total_aguinaldo(self.calcular_aguinaldo(self.get_fecha_salida))
-        print(f'Aguinaldo: {self.get_total_aguinaldo()}')
-
-        # Obtenemos el salario por dia a partir de los ultimos 6 salarios.
-        salario_dia = self.obtener_salario_dia()
-
-        print('\nCalcular el preaviso:\n')
-        self.set_total_preaviso(self.calcular_preaviso(salario_dia))
-        print(f'Preaviso: {self.get_total_preaviso()}')
-
-        print('\nCalcular Cesantía')
-        self.set_total_cesantia(self.calcular_cesantia(salario_dia))
-        print(f'Cesantía: {self.get_total_cesantia()}')
-
         
-    def seleccionar_motivo_salida(self):
-        continuar = True
-        while continuar:
-            os.system('cls')
-            print('Motivo de salida: ')
-            print('1- Despido con responsabilidad patronal')
-            print('2- Despido sin responsabilidad patronal')
-            print('3- Renuncia')
-            
-            # Validamos que la opcion sea correcta.
-            try:
-                opcion = int(input('\nIngrese una opción: '))
-            except:
-                opcion = -1
-
-            match opcion:
-                case 1:
-                    self.set_responsabilidad_patronal(True)
-                    break
-                case 2:
-                    self.set_responsabilidad_patronal(False)
-                    break
-                case 3:
-                    self.set_responsabilidad_patronal(False)
-                    break
-                case _:
-                    print('Ingrese una opcion correcta.')
-                    input('Enter para continuar...')
-        
-
     
     def calcular_preaviso(self, salario_dia):
         # Sacamos los años, meses y dias que trabajo el empleado a partir
@@ -221,17 +175,17 @@ class Empleado:
             print('Error.')
 
 
-    def calcular_aguinaldo(self, fecha_salida):
+    def calcular_aguinaldo(self):
         meses = ['Diciembre', 'Enero', 'Febrero', 'Marzo', 'Abril',
         'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Noviembre']
 
         # Pide el salario del mes empezando en Diciembre y terminando
         # en el mes de la fecha de salida.
-        print('Ingrese los siguientes datos:\n')
+        print('\nIngrese los siguientes datos:\n')
         salario = 0
         salario_total = 0
         for i in range(self.get_fecha_salida().month + 1):
-            salario = int(input(f'Por favor ingrese el ingreso bruto/neto del mes {meses[i]}: '))
+            salario = int(input(f'Por favor ingrese el salario del mes {meses[i]}: '))
             salario_total += salario
 
         aguinaldo = salario_total / 12
@@ -239,7 +193,7 @@ class Empleado:
 
 
     def calcular_liquidacion(self):   
-        liquidacion = self.get_total_preaviso() + self.get_total_liquidacion() + self.get_total_aguinaldo()
+        liquidacion = self.get_total_preaviso() + self.get_total_cesantia() + self.get_total_aguinaldo()
         return liquidacion
 
     # Metodo para dar convertir string a fecha.
@@ -265,7 +219,7 @@ class Empleado:
         years, meses, dias = self.obtener_tiempo_laborado(self.get_fecha_entrada(), self.get_fecha_salida())
 
         # Obtenemos el salario total de los ultimos 6 meses para el calculo del preaviso y cesantia. 
-        print('Por favor ingrese el ingreso bruto/neto de los ultimos 6 salarios.')
+        print('\nPor favor ingrese el salario de los ultimos 6 salarios.')
         salario_total = 0        
         for i in range(6):
             salario = int(input(f'Salario # {i+1}: '))
@@ -278,11 +232,8 @@ class Empleado:
         # Ahora ese promedio lo debemos de dividir entre los 30 dias del
         # mes para sacar el salario por dia.
         salario_dia = salario_total / 30
-        print(f'Salario por dia: {salario_dia}')
+
         return salario_dia
-
-
-
 
     def __str__(self):
         return f"Cédula: {self.get_cedula()} \nEmpleado: {self.get_nombre()} {self.get_apellidos()}\nPuesto: {self.get_puesto()} \nTelefono: {self.get_telefono()} \nFecha de entrada: {self.get_fecha_entrada()} \nFecha de salida: {self.get_fecha_salida()}\nAguinaldo: {self.get_total_aguinaldo()} \nCesantía: {self.get_total_cesantia()} \nPreaviso: {self.get_total_preaviso()} \nTotal Liquidacion: {self.get_total_liquidacion()}"

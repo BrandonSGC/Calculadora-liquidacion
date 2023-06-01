@@ -1,5 +1,6 @@
 # Bibliotecas
 import os
+import time
 
 from Empleado import Empleado
 from datetime import datetime
@@ -14,7 +15,6 @@ def header(titulo = ""):
     print('=' * int(len(titulo)))
     print(titulo)
     print('=' * int(len(titulo)))
-
 
 # Mostrar empleados
 def mostrar_empleados(empleados): 
@@ -84,7 +84,7 @@ def modificar_empleados(empleados):
                         print('La fecha de salida se ha actualizado correctamente.')
                         break
                     case 7:
-                        pass
+                        calcular_liquidacion(empleados)
                     case 8:
                         break
                     case _:
@@ -126,6 +126,104 @@ def buscar_empleado(empleados):
         print('No se han ingresado empleados al sistema.')
     
 
+def calcular_liquidacion(empleados):
+    if len(empleados) > 0:
+        cedula = input('Cedula del empleado a calcular la liquidación: ')
+        print('')
+        for i in range(len(empleados)):
+            if empleados[i].get_cedula() == cedula:
+                print(empleados[i])
+                continuar = True
+                while continuar:
+                    print('\nPor favor ingrese el motivo de salida: ')
+                    print('1- Despido con responsabilidad patronal')
+                    print('2- Despido sin responsabilidad patronal')
+                    print('3- Renuncia')
+                    
+                    # Validamos que la opcion sea correcta.
+                    try:
+                        opcion = int(input('\nIngrese una opción: '))
+                    except:
+                        opcion = -1
+
+                    match opcion:
+                        case 1:
+                            os.system('cls')
+                            header('Calculo Aguinaldo')
+                            empleados[i].set_total_aguinaldo(empleados[i].calcular_aguinaldo())
+                            print(f'\nEl Aguinaldo de {empleados[i].get_nombre()} es de: {empleados[i].get_total_aguinaldo()}')
+                            input('Pulse una tecla para continuar...')
+                            
+                            os.system('cls')                                                        
+
+                            header('Calculo de Preaviso y Cesantía')
+                            # Obtenemos el salario por dia a partir de los ultimos 6 salarios.
+                            salario_dia = empleados[i].obtener_salario_dia()
+
+                            # Calculamos el preaviso
+                            empleados[i].set_total_preaviso(empleados[i].calcular_preaviso(salario_dia))
+                            print(f'\nEl monto del Preaviso de {empleados[i].get_nombre()} es de: {empleados[i].get_total_preaviso()}')
+
+                            # Calculamos la cesantia.
+                            empleados[i].set_total_cesantia(empleados[i].calcular_cesantia(salario_dia))
+                            print(f'\nEl monto de la Cesantía de {empleados[i].get_nombre()} es de: {empleados[i].get_total_cesantia()}')
+
+                            # Calculamos la liquidación.
+                            empleados[i].set_total_liquidacion(empleados[i].calcular_liquidacion())
+                            print(f'\nEl monto de la Liquidación de {empleados[i].get_nombre()} es de: {empleados[i].get_total_liquidacion()}')
+                            break
+
+                        case 2:
+                            os.system('cls')
+                            header('Calculo Aguinaldo')
+                            empleados[i].set_total_aguinaldo(empleados[i].calcular_aguinaldo())
+                            print(f'\nEl Aguinaldo de {empleados[i].get_nombre()} es de: {empleados[i].get_total_aguinaldo()}')
+                            input('Pulse una tecla para continuar...')
+
+                            # Calculamos la liquidación.
+                            empleados[i].set_total_liquidacion(empleados[i].calcular_liquidacion())
+                            print(f'\nEl monto de la Liquidación de {empleados[i].get_nombre()} es de: {empleados[i].get_total_liquidacion()}')
+                            
+                            break
+
+                        case 3:
+                            os.system('cls')
+                            header('Calculo Aguinaldo')
+                            empleados[i].set_total_aguinaldo(empleados[i].calcular_aguinaldo())
+                            print(f'\nEl Aguinaldo de {empleados[i].get_nombre()} es de: {empleados[i].get_total_aguinaldo()}')
+                            input('Pulse una tecla para continuar...')                            
+
+                            # Preguntar si realizo el preaviso
+                            continuar2 = True
+                            while continuar2:
+                                print('\nSe ha ejercido el preaviso?\n')
+                                print('1- Si')
+                                print('2- No')
+                                
+                                try:
+                                    opcion = int(input('\nOpción: '))
+                                except:
+                                    opcion = -1
+                                
+                                match opcion:
+                                    case 1:
+                                        # Calculamos el preaviso
+                                        empleados[i].set_total_preaviso(empleados[i].calcular_preaviso(salario_dia))
+                                        print(f'\nEl monto del Preaviso de {empleados[i].get_nombre()} es de: {empleados[i].get_total_preaviso()}')                                        
+                            # Calculamos la liquidación.
+                            empleados[i].set_total_liquidacion(empleados[i].calcular_liquidacion())
+                            print(f'\nEl monto de la Liquidación de {empleados[i].get_nombre()} es de: {empleados[i].get_total_liquidacion()}')
+                            break
+
+                        case _:
+                            print('Ingrese una opcion correcta.')
+                            input('Enter para continuar...')                
+                break
+            else:
+                print('No se han encontrado resultados.')
+    else:
+        print('Primero debe de ingrear el empleado al sistema.')
+
 
 # Metodo Principal (Donde empezamos a ejecutar todo el codigo).
 def main():
@@ -156,6 +254,7 @@ def main():
         match opcion:            
             case 1:
                 header('Calcular Liquidación')
+                calcular_liquidacion(empleados)
                                 
                 input('Enter para continuar...')
             
