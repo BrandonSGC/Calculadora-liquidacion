@@ -258,8 +258,13 @@ def generar_XML(empleados):
         empleado = doc.createElement("empleado")
         root.appendChild(empleado)
 
+        cedula = doc.createElement('cedula')
+        empleado.appendChild(cedula)
+        cedula_texto = doc.createTextNode(empleados[i].get_cedula())
+        cedula.appendChild(cedula_texto)
+
         # Crear el elemento dentro de 'empleado'
-        nombre = doc.createElement("nombre")
+        nombre = doc.createElement('nombre')
         empleado.appendChild(nombre)
         # Agregar el texto dentro de la etiqueta
         nombre_texto = doc.createTextNode(empleados[i].get_nombre())
@@ -317,18 +322,63 @@ def generar_XML(empleados):
         totalLiquidacion.appendChild(totalLiquidacion_texto)
 
     # Guardar el documento XML en un archivo
-    xml_file = open("output.xml", "w")
+    xml_file = open("empleados.xml", "w")
     xml_file.write(doc.toprettyxml(indent="\t"))
     xml_file.close()
 
-def leer_XML(empleados):
+
+def leer_XML():
+    # Cargamos el archivo XML.
+    if os.path.exists("empleados.xml"):
+        doc = minidom.parse("empleados.xml")
+
+        # Obtenemos la raíz del documento.
+        root = doc.documentElement
+
+        # Obtener un array de los elementos 'empleado' del archivo.
+        empleados = root.getElementsByTagName("empleado")
+
+        # Recorremos cada elemento 'empleado'
+        for empleado in empleados:
+            cedula = empleado.getElementsByTagName("cedula")[0].childNodes[0].data
+            nombre = empleado.getElementsByTagName("nombre")[0].childNodes[0].data
+            apellidos = empleado.getElementsByTagName("apellidos")[0].childNodes[0].data
+            telefono = empleado.getElementsByTagName("telefono")[0].childNodes[0].data
+            puesto = empleado.getElementsByTagName("puesto")[0].childNodes[0].data
+            fecha_entrada = empleado.getElementsByTagName("fechaEntrada")[0].childNodes[0].data
+            fecha_salida = empleado.getElementsByTagName("fechaSalida")[0].childNodes[0].data
+            total_preaviso = empleado.getElementsByTagName("totalPreaviso")[0].childNodes[0].data
+            total_aguinaldo = empleado.getElementsByTagName("totalAguinaldo")[0].childNodes[0].data
+            total_cesantia = empleado.getElementsByTagName("totalCesantia")[0].childNodes[0].data
+            total_liquidacion = empleado.getElementsByTagName("totalLiquidacion")[0].childNodes[0].data
+
+            # Imprimir los valores del empleado.
+            print(f"Cedula: {cedula}")
+            print(f"Nombre: {nombre}")
+            print(f"Apellidos: {apellidos}")
+            print(f"Teléfono: {telefono}")
+            print(f"Puesto: {puesto}")
+            print(f"Fecha de entrada: {fecha_entrada}")
+            print(f"Fecha de salida: {fecha_salida}")
+            print(f"Total de preaviso: {total_preaviso}")
+            print(f"Total de aguinaldo: {total_aguinaldo}")
+            print(f"Total de cesantía: {total_cesantia}")
+            print(f"Total de liquidación: {total_liquidacion}")
+            print("-"*31)
+    else:
+        print("No se ha encontrado el archivo XML.")
+    
+    
+
+def actualizar_XML():
     pass
 
-def actualizar_XML(empleados):
-    pass
-
-def eliminar_XML(empleados):
-    pass
+def eliminar_XML():
+    if os.path.exists("empleados.xml"):
+        os.remove("empleados.xml")
+        print("Archivo XML se ha eliminado exitosamente.")
+    else:
+        print("No se ha encontrado el archivo XML.")
 
 
 
@@ -402,7 +452,7 @@ def main():
 
             case 8:
                 header('Leer Archivo XML')
-                
+                leer_XML()
                 input('Enter para continuar... ')
 
             case 9:
@@ -412,7 +462,7 @@ def main():
 
             case 10:
                 header('Eliminar Archivo XML')
-                
+                eliminar_XML()
                 input('Enter para continuar... ')
             
             case 11:
