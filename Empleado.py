@@ -105,10 +105,23 @@ class Empleado:
         else:
             print("El número telefónico no tiene el formato válido.\n")
             return False
+                
+    def validar_fecha(self, fecha):
+        patron = r'^([1-9]\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$'
+        coincidencia = re.match(patron, fecha)
+        if coincidencia:
+            anio = int(coincidencia.group(1))
+            mes = int(coincidencia.group(2))
+            dia = int(coincidencia.group(3))
+            if anio > 0 and mes > 0 and mes < 13 and dia < 32 and dia > 0:
+                return True
+        else:
+            print("La fecha no tiene el formato válido.")
+            return False
 
     # Crear nuevo empleado.
     def crear_empleado(self):
-        # Mientras la cedula no sea valida le preguntamos su cedula.
+        # Validamos cedula
         cedula_valida = False
         while not cedula_valida:
             cedula = input("Ingresa tu Cédula, ejemplo: 1-1111-1111: ")
@@ -120,7 +133,7 @@ class Empleado:
         self.set_nombre(input('Nombre (Solo el nombre): '))
         self.set_apellidos(input('Apellidos: '))
 
-        # Mientras el telefono no sea valido le preguntamos su telefono.
+        # Validamos telefono.
         telefono_valido = False
         while not telefono_valido:
             telefono = input('Ingresa tu Teléfono, ejemplo "8888-8888": ')
@@ -131,17 +144,23 @@ class Empleado:
 
         self.set_puesto(input('Puesto: '))
         
-        # Obtener fechas
-        fecha_entrada = input('Fecha de entrada ejemplo 2022-01-01: ')
-        fecha_salida = input('Fecha de salida ejemplo 2022-01-01: ')
-   
-        # Asignamos las fechas ya en su formato corecto.
-        self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
-        self.set_fecha_salida(self.formatear_fecha(fecha_salida))
+        # Validamos y obtenemos fechas.
+        fecha_valida = False
+        while not fecha_valida:
+            fecha_entrada = input('Fecha de entrada ejemplo 2022-01-01: ')
+            fecha_valida = self.validar_fecha(fecha_entrada)
+            if fecha_valida:
+                self.set_fecha_entrada(self.formatear_fecha(fecha_entrada))
+                break
 
+        fecha_valida = False
+        while not fecha_valida:
+            fecha_salida = input('Fecha de salida ejemplo 2022-01-01: ')
+            fecha_valida = self.validar_fecha(fecha_salida)
+            if fecha_valida:
+                self.set_fecha_salida(self.formatear_fecha(fecha_salida))
+                break
 
-        
-    
     def calcular_preaviso(self, salario_dia):
         # Sacamos los años, meses y dias que trabajo el empleado a partir
         # de la fecha de entrada y salida.
@@ -177,8 +196,23 @@ class Empleado:
         years, meses, dias = self.obtener_tiempo_laborado(self.get_fecha_entrada(), self.get_fecha_salida())
 
         # Dependiendo de esos dias entonces de acuerdo a la tabla
-        # verificamos cuantos dias de cesantia le tocan.
-        if years == 1:
+        # verificamos cuantos dias de cesantia le tocan.        
+        
+        if years == 0 and meses < 3:            
+            cesantia = 0
+            return cesantia
+
+        elif years == 0 and meses >= 3 and meses < 6:
+            dias_cesantia = 7
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+        
+        elif years == 0 and meses >= 6:
+            dias_cesantia = 14
+            cesantia = salario_dia * dias_cesantia
+            return cesantia
+
+        elif years == 1:
             dias_cesantia = 19.5
             cesantia = salario_dia * dias_cesantia
             return cesantia

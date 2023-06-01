@@ -68,7 +68,6 @@ def modificar_empleados(empleados):
                                 empleados[i].set_telefono(telefono)
                                 break
 
-
                         print('El Telefono se ha actualizado correctamente.')
                         break
                     case 4:
@@ -78,18 +77,27 @@ def modificar_empleados(empleados):
                         break
                     case 5:
                         print(f'\nFecha de entrada: {empleados[i].get_fecha_entrada()}')
-                        # Obtener fechas
-                        fecha_entrada = input('Nueva fecha de entrada ejemplo 2022-01-01: ')                
-                        # Asignamos las fechas ya en su formato corecto.
-                        empleados[i].set_fecha_entrada(empleados[i].formatear_fecha(fecha_entrada))
+                        fecha_valida = False
+                        while not fecha_valida:
+                            fecha_entrada = input('Nueva fecha de entrada ejemplo 2022-01-01: ')
+                            fecha_valida = empleados[i].validar_fecha(fecha_entrada)
+                            if fecha_valida:
+                                empleados[i].set_fecha_entrada(empleados[i].formatear_fecha(fecha_entrada))
+                                break
+
                         print('La fecha de entrada se ha actualizado correctamente.')
                         break
                     case 6:
                         print(f'\nFecha de salida: {empleados[i].get_fecha_salida()}')
-                        # Obtener fechas
-                        fecha_salida = input('Nueva fecha de salida ejemplo 2023-01-01: ')                
-                        # Asignamos las fechas ya en su formato corecto.
-                        empleados[i].set_fecha_salida(empleados[i].formatear_fecha(fecha_salida))
+
+                        fecha_valida = False
+                        while not fecha_valida:
+                            fecha_salida = input('Nueva fecha de salida ejemplo 2023-01-01: ')
+                            fecha_valida = empleados[i].validar_fecha(fecha_salida)
+                            if fecha_valida:
+                                empleados[i].set_fecha_salida(empleados[i].formatear_fecha(fecha_salida))
+                                break
+
                         print('La fecha de salida se ha actualizado correctamente.')
                         break
                     case 7:
