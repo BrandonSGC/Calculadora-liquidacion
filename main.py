@@ -1,6 +1,6 @@
 # Bibliotecas
 import os
-import time
+from xml.dom import minidom
 
 from Empleado import Empleado
 from datetime import datetime
@@ -18,11 +18,13 @@ def header(titulo = ""):
 
 # Mostrar empleados
 def mostrar_empleados(empleados): 
-    for i in range(len(empleados)):
-        print(f"{empleados[i]}")
-        print('=' * 36)
-        print('')
-
+    if len(empleados) > 0:
+        for i in range(len(empleados)):
+            print(f"{empleados[i]}")
+            print('=' * 36)
+            print('')
+    else:
+        print('No se han ingresado empleados al sistema.')
 
 # Modificar empleados
 def modificar_empleados(empleados):
@@ -242,6 +244,94 @@ def calcular_liquidacion(empleados):
         print('Primero debe de ingrear el empleado al sistema.')
 
 
+def generar_XML(empleados):
+    # Crear el documento XML
+    doc = minidom.Document()
+
+    # Crear la etiqueta raíz
+    root = doc.createElement("root")
+    doc.appendChild(root)
+
+    for i in range(len(empleados)):
+
+        # Crear el elemento 'empleado'
+        empleado = doc.createElement("empleado")
+        root.appendChild(empleado)
+
+        # Crear el elemento dentro de 'empleado'
+        nombre = doc.createElement("nombre")
+        empleado.appendChild(nombre)
+        # Agregar el texto dentro de la etiqueta
+        nombre_texto = doc.createTextNode(empleados[i].get_nombre())
+        nombre.appendChild(nombre_texto)
+
+        apellidos = doc.createElement('apellidos')
+        empleado.appendChild(apellidos)
+        apellidos_texto = doc.createTextNode(empleados[i].get_apellidos())
+        apellidos.appendChild(apellidos_texto)
+
+        telefono = doc.createElement('telefono')
+        empleado.appendChild(telefono)
+        telefono_texto = doc.createTextNode(empleados[i].get_telefono())
+        telefono.appendChild(telefono_texto)
+
+        puesto = doc.createElement('puesto')
+        empleado.appendChild(puesto)
+        puesto_texto = doc.createTextNode(empleados[i].get_puesto())
+        puesto.appendChild(puesto_texto)
+        
+        fechaEntrada = doc.createElement('fechaEntrada')
+        empleado.appendChild(fechaEntrada)
+        # Convertimos la fecha en string.
+        fecha_entrada = empleados[i].get_fecha_entrada()
+        fecha_entrada_string = fecha_entrada.strftime('%Y-%m-%d')        
+        fechaEntrada_texto = doc.createTextNode(fecha_entrada_string)
+        fechaEntrada.appendChild(fechaEntrada_texto)
+
+        fechaSalida = doc.createElement('fechaSalida')
+        empleado.appendChild(fechaSalida)
+        # Convertimos la fecha en string.
+        fecha_salida = empleados[i].get_fecha_salida()
+        fecha_salida_string = fecha_salida.strftime('%Y-%m-%d')
+        fechaSalida_texto = doc.createTextNode(fecha_salida_string)
+        fechaSalida.appendChild(fechaSalida_texto)
+
+        totalPreaviso = doc.createElement('totalPreaviso')
+        empleado.appendChild(totalPreaviso)
+        totalPreaviso_texto = doc.createTextNode(str(empleados[i].get_total_preaviso()))
+        totalPreaviso.appendChild(totalPreaviso_texto)
+
+        totalAguinaldo = doc.createElement('totalAguinaldo')
+        empleado.appendChild(totalAguinaldo)
+        totalAguinaldo_texto = doc.createTextNode(str(empleados[i].get_total_aguinaldo()))
+        totalAguinaldo.appendChild(totalAguinaldo_texto) 
+        
+        totalCesantia = doc.createElement('totalCesantia')
+        empleado.appendChild(totalCesantia)
+        totalCesantia_texto = doc.createTextNode(str(empleados[i].get_total_cesantia()))
+        totalCesantia.appendChild(totalCesantia_texto)
+        
+        totalLiquidacion = doc.createElement('totalLiquidacion')
+        empleado.appendChild(totalLiquidacion)
+        totalLiquidacion_texto = doc.createTextNode(str(empleados[i].get_total_liquidacion()))
+        totalLiquidacion.appendChild(totalLiquidacion_texto)
+
+    # Guardar el documento XML en un archivo
+    xml_file = open("output.xml", "w")
+    xml_file.write(doc.toprettyxml(indent="\t"))
+    xml_file.close()
+
+def leer_XML(empleados):
+    pass
+
+def actualizar_XML(empleados):
+    pass
+
+def eliminar_XML(empleados):
+    pass
+
+
+
 # Metodo Principal (Donde empezamos a ejecutar todo el codigo).
 def main():
     # En esta lista almacenaremos los empleados.
@@ -256,7 +346,11 @@ def main():
         print('4- Buscar Empleados') 
         print('5- Modificar Datos de Empleado')
         print('6- Eliminar Empleado')
-        print('7- Salir')
+        print('7- Generar Archivo XML')
+        print('8- Leer Archivo XML')
+        print('9- Actualizar Archivo XML')
+        print('10- Eliminar Archivo XML')        
+        print('11- Salir')
 
 
         # Validamos que solo se ingresen numeros.
@@ -302,6 +396,26 @@ def main():
                 input('Enter para continuar...')
 
             case 7:
+                header('Generar Archivo XML')
+                generar_XML(empleados)
+                input('Enter para continuar... ')
+
+            case 8:
+                header('Leer Archivo XML')
+                
+                input('Enter para continuar... ')
+
+            case 9:
+                header('Actualizar Archivo XML')
+                
+                input('Enter para continuar... ')
+
+            case 10:
+                header('Eliminar Archivo XML')
+                
+                input('Enter para continuar... ')
+            
+            case 11:
                 print('Gracias por utilizar el sistema...')
                 break
             
