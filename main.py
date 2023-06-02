@@ -227,8 +227,12 @@ def calcular_liquidacion(empleados):
                                 match opcion:
                                     case 1:
                                         # Calculamos el preaviso
+                                        salario_dia = empleados[i].obtener_salario_dia()
                                         empleados[i].set_total_preaviso(empleados[i].calcular_preaviso(salario_dia))
-                                        print(f'\nEl monto del Preaviso de {empleados[i].get_nombre()} es de: {empleados[i].get_total_preaviso()}')                                        
+                                        print(f'\nEl monto del Preaviso de {empleados[i].get_nombre()} es de: {empleados[i].get_total_preaviso()}')
+                                        break
+                                    case 2:
+                                        break
                             # Calculamos la liquidación.
                             empleados[i].set_total_liquidacion(empleados[i].calcular_liquidacion())
                             print(f'\nEl monto de la Liquidación de {empleados[i].get_nombre()} es de: {empleados[i].get_total_liquidacion()}')
@@ -325,6 +329,7 @@ def generar_XML(empleados):
     xml_file = open("empleados.xml", "w")
     xml_file.write(doc.toprettyxml(indent="\t"))
     xml_file.close()
+    print('El archivo se ha creado con éxito!')
 
 
 def leer_XML():
