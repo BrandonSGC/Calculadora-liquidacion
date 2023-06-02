@@ -35,14 +35,14 @@ def modificar_empleados(empleados):
             if empleados[i].get_cedula() == cedula:
                                 
                 print('Que desea modificar?\n')
-                print(f'1- Nombre: {empleados[i].get_nombre()}')
-                print(f'2- Apellidos: {empleados[i].get_apellidos()}')
-                print(f'3- Telefono: {empleados[i].get_telefono()}')
-                print(f'4- Puesto: {empleados[i].get_puesto()}')
-                print(f'5- Fecha de entrada: {empleados[i].get_fecha_entrada()}')
-                print(f'6- Fecha de salida: {empleados[i].get_fecha_salida()}')
-                print(f'7- Calcular nuevamente la liquidacion')
-                print('8- Cancelar')
+                print(f'1. Nombre: {empleados[i].get_nombre()}')
+                print(f'2. Apellidos: {empleados[i].get_apellidos()}')
+                print(f'3. Telefono: {empleados[i].get_telefono()}')
+                print(f'4. Puesto: {empleados[i].get_puesto()}')
+                print(f'5. Fecha de entrada: {empleados[i].get_fecha_entrada()}')
+                print(f'6. Fecha de salida: {empleados[i].get_fecha_salida()}')
+                print(f'7. Calcular nuevamente la liquidacion')
+                print('8. Cancelar')
                 try:
                     opcion = int(input('\nSeleccione una opcion: '))
                 except:
@@ -155,9 +155,9 @@ def calcular_liquidacion(empleados):
                 continuar = True
                 while continuar:
                     print('\nPor favor ingrese el motivo de salida: ')
-                    print('1- Despido con responsabilidad patronal')
-                    print('2- Despido sin responsabilidad patronal')
-                    print('3- Renuncia')
+                    print('1. Despido con responsabilidad patronal')
+                    print('2. Despido sin responsabilidad patronal')
+                    print('3. Renuncia')
                     
                     # Validamos que la opcion sea correcta.
                     try:
@@ -368,10 +368,107 @@ def leer_XML():
     else:
         print("No se ha encontrado el archivo XML.")
     
-    
-
 def actualizar_XML():
-    pass
+    if os.path.exists("empleados.xml"):
+        doc = minidom.parse("empleados.xml")
+
+        # Obtener la lista de elementos 'empleado'
+        empleados = doc.getElementsByTagName("empleado")
+
+        # Buscar el empleado por cédula
+        cedula = input('Cedula a buscar: ')
+        
+        for empleado in empleados:
+            continuar = True
+            while continuar:
+                # Obtenemos la cedula del empleado.
+                cedula_empleado = empleado.getElementsByTagName("cedula")[0].childNodes[0].data
+
+                if cedula_empleado == cedula:                
+                    # Mostrar un menú para que el usuario seleccione qué campo desea editar
+                    print("¿Qué campo desea editar?")
+                    print("1. Nombre")
+                    print("2. Apellidos")
+                    print("3. Teléfono")
+                    print("4. Puesto")
+                    print("5. Fecha de entrada")
+                    print("6. Fecha de salida")
+                    print("7. Preaviso")
+                    print("8. Aguinaldo")
+                    print("9. Cesantía")
+                    print("10. Liquidación")
+                    print("11. Salir")
+                    
+                    try:
+                        opcion = int(input("Ingrese el número de opción: "))
+                    except:
+                        opcion = -1
+
+                    match opcion:
+                        case 1:
+                            nombre = empleado.getElementsByTagName("nombre")[0].childNodes[0].data
+                            print(f'Nombre actual: {nombre}')
+                            # Solicitar el nuevo nombre al usuario
+                            nuevo_nombre = input("Ingrese el nuevo nombre: ")
+                            
+                            # Actualizar el nombre en el documento XML
+                            nuevo_nombre_nodo = doc.createTextNode(nuevo_nombre)
+                            empleado.replaceChild(nuevo_nombre_nodo, nombre)
+
+                            # Guardar los cambios en el archivo XML
+                            with open('empleados.xml', "w") as archivo:
+                                doc.writexml(archivo)
+                            break
+                        case 2:
+                            apellidos = empleado.getElementsByTagName("apellidos")[0].childNodes[0].data
+                            print(f'Apellidos: {apellidos}')
+                            break
+                        case 3:                            
+                            telefono = empleado.getElementsByTagName("telefono")[0].childNodes[0].data
+                            print(f'Telefono actual: {telefono}')
+                            break
+                        case 4:
+                            puesto = empleado.getElementsByTagName("puesto")[0].childNodes[0].data
+                            print(f'Puesto actual: {puesto}')
+                            break
+                        case 5:
+                            fechaEntrada = empleado.getElementsByTagName("fechaEntrada")[0].childNodes[0].data
+                            print(f'Fecha de Entrada actual: {fechaEntrada}')
+                            break
+                        case 6:
+                            fechaSalida = empleado.getElementsByTagName("fechaSalida")[0].childNodes[0].data
+                            print(f'Fecha de Salida actual: {fechaSalida}')
+                            break;
+
+                        case 7:
+                            totalPreaviso = empleado.getElementsByTagName("totalPreaviso")[0].childNodes[0].data
+                            print(f'Total Preaviso actual: {totalPreaviso}')
+                            break
+                        case 8:
+                            totalAguinaldo = empleado.getElementsByTagName("totalAguinaldo")[0].childNodes[0].data
+                            print(f'Total Aguinaldo actual: {totalAguinaldo}')
+                            break
+                        case 9:
+                            totalCesantia = empleado.getElementsByTagName("totalCesantia")[0].childNodes[0].data
+                            print(f'Total cesantia actual: {totalCesantia}')
+                            break
+                        case 10:
+                            totalLiquidacion = empleado.getElementsByTagName("totalLiquidacion")[0].childNodes[0].data
+                            print(f'Total Liquidacion actual: {totalLiquidacion}')
+                            break
+                        case 11:
+                            break
+                        case _:
+                            print('Opcion incorrecta.')
+                            input('Enter para continuar...')
+                        
+                else:
+                    print('No se encontró el empleado.')
+                    break
+
+    else:
+        print("No se ha encontrado el archivo XML.")
+
 
 def eliminar_XML():
     if os.path.exists("empleados.xml"):
@@ -390,17 +487,17 @@ def main():
     while continuar:        
         
         header('Grupo Diez - Menú')
-        print('\n1- Calcular Liquidación')
-        print('2- Crear Empleado')
-        print('3- Mostrar Empleados') 
-        print('4- Buscar Empleados') 
-        print('5- Modificar Datos de Empleado')
-        print('6- Eliminar Empleado')
-        print('7- Generar Archivo XML')
-        print('8- Leer Archivo XML')
-        print('9- Actualizar Archivo XML')
-        print('10- Eliminar Archivo XML')        
-        print('11- Salir')
+        print('\n1. Calcular Liquidación')
+        print('2. Crear Empleado')
+        print('3. Mostrar Empleados') 
+        print('4. Buscar Empleados') 
+        print('5. Modificar Datos de Empleado')
+        print('6. Eliminar Empleado')
+        print('7. Generar Archivo XML')
+        print('8. Leer Archivo XML')
+        print('9. Actualizar Archivo XML')
+        print('10. Eliminar Archivo XML')        
+        print('11. Salir')
 
 
         # Validamos que solo se ingresen numeros.
@@ -457,7 +554,7 @@ def main():
 
             case 9:
                 header('Actualizar Archivo XML')
-                
+                actualizar_XML()
                 input('Enter para continuar... ')
 
             case 10:

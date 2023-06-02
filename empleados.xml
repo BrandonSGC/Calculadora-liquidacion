@@ -1,0 +1,41 @@
+<?xml version="1.0" ?><root>
+	<empleado>
+		<cedula>1-1797-0823</cedula>
+		<nombre>Brandon</nombre>
+		<apellidos>Gomez Carvajal</apellidos>
+		<telefono>7042-8451</telefono>
+		<puesto>Ingeniero de Software</puesto>
+		<fechaEntrada>2022-01-01</fechaEntrada>
+		<fechaSalida>2023-01-01</fechaSalida>
+		<totalPreaviso>200000</totalPreaviso>
+		<totalAguinaldo>400000</totalAguinaldo>
+		<totalCesantia>500000</totalCesantia>
+		<totalLiquidacion>1100000</totalLiquidacion>
+	</empleado>
+	<empleado>
+		<cedula>1-4234-1553</cedula>
+		<nombre>Carlos</nombre>
+		<apellidos>Gomez Badilla</apellidos>
+		<telefono>8824-8009</telefono>
+		<puesto>Maestro de Obras</puesto>
+		<fechaEntrada>2022-01-01</fechaEntrada>
+		<fechaSalida>2023-01-01</fechaSalida>
+		<totalPreaviso>135000</totalPreaviso>
+		<totalAguinaldo>360000</totalAguinaldo>
+		<totalCesantia>700000</totalCesantia>
+		<totalLiquidacion>1195000</totalLiquidacion>
+	</empleado>
+	<empleado>
+		<cedula>4-1246-1198</cedula>
+		<nombre>Maria</nombre>
+		<apellidos>Carvajal Ramirez</apellidos>
+		<telefono>8676-0010</telefono>
+		<puesto>Psicologa</puesto>
+		<fechaEntrada>2022-01-01</fechaEntrada>
+		<fechaSalida>2023-01-01</fechaSalida>
+		<totalPreaviso>135000</totalPreaviso>
+		<totalAguinaldo>360000</totalAguinaldo>
+		<totalCesantia>700000</totalCesantia>
+		<totalLiquidacion>1195000</totalLiquidacion>
+	</empleado>
+</root>
